@@ -3,6 +3,7 @@ package route53
 import (
 	"context"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"strconv"
 	"time"
 
@@ -19,7 +20,8 @@ func (p *Provider) NewSession() error {
 		p.MaxRetries = 5
 	}
 	sess, err := session.NewSession(&aws.Config{
-		MaxRetries: aws.Int(p.MaxRetries),
+		Credentials: credentials.NewStaticCredentials(p.AccessKeyID, p.SecretKey, ""),
+		MaxRetries:  aws.Int(p.MaxRetries),
 	})
 	if err != nil {
 		return err
